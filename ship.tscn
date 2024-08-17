@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhoac1sqpsgjb"]
+
+[ext_resource type="Script" path="res://scripts/Ship.gd" id="1_qtxkt"]
+
+[node name="Ship" type="Node2D"]
+position = Vector2(0, 5)
+script = ExtResource("1_qtxkt")
