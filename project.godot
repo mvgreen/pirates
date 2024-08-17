@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Pirates"
-run/main_scene="res://ship.tscn"
+run/main_scene="res://Sea.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
@@ -44,4 +44,4 @@ direction_right={
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"

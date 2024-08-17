@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://coccek7xjofc5"]
+
+[ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
+[ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
+[ext_resource type="PackedScene" uid="uid://bguv7nl60urxb" path="res://manual_mode.tscn" id="2_cijco"]
+[ext_resource type="Script" path="res://scripts/ship_render.gd" id="2_nk2qb"]
+[ext_resource type="Script" path="res://scripts/Ship.gd" id="3_mc8wv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_vco1m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Sea" type="Node2D"]
+
+[node name="ShipModel" type="Node" parent="."]
+script = ExtResource("3_mc8wv")
+
+[node name="ManualMode" parent="." node_paths=PackedStringArray("ship") instance=ExtResource("2_cijco")]
+ship = NodePath("../ShipModel")
+
+[node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship")]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_74rmc")
+ship = NodePath("../ShipModel")
+
+[node name="ShipRender" type="Node2D" parent="." node_paths=PackedStringArray("ship_model")]
+script = ExtResource("2_nk2qb")
+ship_model = NodePath("../ShipModel")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="ShipRender"]
+sprite_frames = SubResource("SpriteFrames_d4ovq")
