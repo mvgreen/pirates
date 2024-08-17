@@ -2,6 +2,8 @@ extends Node
 
 class_name Ship
 
+signal game_over
+
 var helmsman_skill = 2
 var seamen_skill = 2
 var gunners_skill = 2
@@ -52,3 +54,8 @@ func get_reload_time():
 
 func get_repair_amount():
 	return carpenters_skill * 10
+
+func damage(value: int):
+	hull_hp = hull_hp - value
+	if hull_hp <= 0:
+		emit_signal("game_over")

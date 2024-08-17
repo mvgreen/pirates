@@ -43,21 +43,21 @@ sprite_frames = SubResource("SpriteFrames_d4ovq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipRender/Area2D"]
 shape = SubResource("CircleShape2D_h71f6")
 
-[node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer")]
+[node name="Obstacles" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer")]
 script = ExtResource("4_smceo")
 ship = NodePath("../ShipModel")
 shipRenderer = NodePath("../ShipRender")
 
-[node name="Obstacle" type="Node2D" parent="ObstacleContainer"]
+[node name="Obstacle" type="Node2D" parent="Obstacles"]
 position = Vector2(300, 200)
 script = ExtResource("4_xqak8")
 
-[node name="Sprite2D" type="Sprite2D" parent="ObstacleContainer/Obstacle"]
+[node name="Sprite2D" type="Sprite2D" parent="Obstacles/Obstacle"]
 texture = ExtResource("6_8a6op")
 
-[node name="Area2D" type="Area2D" parent="ObstacleContainer/Obstacle"]
+[node name="Area2D" type="Area2D" parent="Obstacles/Obstacle"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleContainer/Obstacle/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/Obstacle/Area2D"]
 shape = SubResource("CircleShape2D_l62fu")
 
 [node name="ManualMode" parent="." node_paths=PackedStringArray("ship") instance=ExtResource("2_cijco")]

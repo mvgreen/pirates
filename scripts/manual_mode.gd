@@ -4,7 +4,10 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	ship.game_over.connect(on_game_over)
+
+func on_game_over():
+	print("Game Over!")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
