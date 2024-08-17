@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bguv7nl60urxb"]
+
+[ext_resource type="Script" path="res://scripts/manual_mode.gd" id="1_1b2gl"]
+
+[node name="ManualMode" type="Node2D"]
+script = ExtResource("1_1b2gl")
