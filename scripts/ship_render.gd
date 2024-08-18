@@ -8,7 +8,7 @@ var ship_render_position: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	ship_model.world_position = Vector2(600, 400)
+	ship_model.world_position = Vector2(500, 300)
 	ship_model.direction = Vector2.UP
 	ship_render_position = ship_model.world_position
 	position = ship_render_position

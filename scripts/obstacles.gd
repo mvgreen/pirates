@@ -95,7 +95,7 @@ func load_chunk(chunk: Vector2, intensity: int):
 		var obstacle = obstacles_pool.keys().back() as Obstacle
 		obstacles_pool.erase(obstacle)
 		obstacle.active = true
-		obstacle.initial_position = position + chunk * 1000
+		obstacle.initial_position = position + chunk * 1000 - shipRenderer.ship_render_position
 		obstacle.position = obstacle.initial_position - (ship.world_position - shipRenderer.ship_render_position)
 		obstacle.effect_type = Obstacle.EFFECT_DAMAGE
 		obstacle.effect_value = randi() % 20
