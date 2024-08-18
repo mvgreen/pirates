@@ -4,8 +4,10 @@ extends Node2D
 @export var ship: Ship
 @export var shipRenderer: ShipRenderer
 
+var angle90 = PI/2
+var angle45 = PI/4
 var pirateShipInputs = PirateShipInputs.new()
-
+var min_distance_between = 22500
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 
@@ -18,26 +20,36 @@ func _ready() -> void:
 var time = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	var distance_between = ((playerShip.world_position.x-ship.world_position.x)**2)+((playerShip.world_position.y-ship.world_position.y)**2)
 	position = ship.world_position - (playerShip.world_position - shipRenderer.ship_render_position)
 	rotation = ship.direction.angle()
+	#var playerPosition = playerShip.world_position
+	#var playerRotation = playerShip.direction.angle()
 	
 	#time += delta
 	#if time >= 1:
-	pirateShip()
+	
+	chase()
 	#	time = 0
 
-func pirateShip():
+func chase():
+	
 	var direction_to_playerShip = (playerShip.world_position + playerShip.direction.normalized() * 200 - ship.world_position).normalized()
 	var rotation_angle = (ship.direction.angle() - direction_to_playerShip.angle())
-	if rotation_angle > 0.0:
+	if rotation_angle > angle45:
 		pirateShipInputs.right_pressed = false
 		pirateShipInputs.left_pressed = true
-	elif rotation_angle < 0.0:
+	elif rotation_angle < -angle45:
 		pirateShipInputs.left_pressed = false
 		pirateShipInputs.right_pressed = true
 	else:
 		pirateShipInputs.left_pressed = false
 		pirateShipInputs.right_pressed = false
+		
+	if abs(ship.direction.angle()-playerShip.direction.angle()) > angle90:
+		ship.update_acceleration_stage(1)
+	else:
+		ship.update_acceleration_stage(3)
 		
 func _physics_process(delta: float) -> void:
 	var position = ship.world_position
