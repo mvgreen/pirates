@@ -15,6 +15,7 @@ var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	ship = $PirateShip
 	ship.world_position = Vector2(100, 200)
 	position = ship.world_position - playerShip.world_position
 

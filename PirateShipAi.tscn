@@ -7,8 +7,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_e4y6p"]
 radius = 40.0
 
-[node name="PirateShipAi" type="Node2D"]
+[node name="PirateShipAi" type="Node2D" node_paths=PackedStringArray("ship")]
 script = ExtResource("1_h1lgf")
+ship = NodePath("PirateShip")
 
 [node name="PirateShip" type="Node" parent="."]
 script = ExtResource("2_4jg4n")

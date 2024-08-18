@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=11 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
-[ext_resource type="PackedScene" uid="uid://bhoac1sqpsgjb" path="res://ship.tscn" id="1_ekyau"]
 [ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
 [ext_resource type="PackedScene" uid="uid://bguv7nl60urxb" path="res://manual_mode.tscn" id="2_cijco"]
 [ext_resource type="Script" path="res://scripts/ship_render.gd" id="2_nk2qb"]
@@ -25,8 +24,6 @@ animations = [{
 radius = 40.0
 
 [node name="Sea" type="Node2D"]
-
-[node name="PirateShip" parent="." instance=ExtResource("1_ekyau")]
 
 [node name="ShipModel" type="Node" parent="."]
 script = ExtResource("3_mc8wv")
@@ -57,15 +54,12 @@ shipRenderer = NodePath("../ShipRender")
 
 [node name="PirateShipAi" parent="." node_paths=PackedStringArray("playerShip", "ship", "shipRenderer") instance=ExtResource("10_ae3vb")]
 playerShip = NodePath("../ShipModel")
-ship = NodePath("../PirateShip")
+ship = NodePath("")
 shipRenderer = NodePath("../ShipRender")
-
-[node name="Sprite2D2" type="Sprite2D" parent="PirateShipAi"]
-texture = ExtResource("1_vco1m")
 
 [node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship", "pShip")]
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("1_74rmc")
 ship = NodePath("../ShipModel")
-pShip = NodePath("../PirateShip")
+pShip = NodePath("")
