@@ -5,11 +5,12 @@ extends Node2D
 @export var shipRenderer: ShipRenderer
 
 var angle90 = PI/2
-var angle45 = PI/4
+var angle22 = PI/8
 var pirateShipInputs = PirateShipInputs.new()
-var min_distance_between = 22500
+var min_distance_between = 90000
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,17 +30,56 @@ func _process(delta: float) -> void:
 	#time += delta
 	#if time >= 1:
 	
-	chase()
+	if not in_effective_range():
+		chase()
+	else:
+		circling()
 	#	time = 0
 
-func chase():
+func normalizeAngle(angle: float) -> float:
+	if angle < 0:
+		return angle + 2*PI
+	else:
+		return angle
+
+func circling():
+	var direction_to_playerShip = (playerShip.world_position - ship.world_position).normalized()
+	var direction_to_player_normalized = normalizeAngle(direction_to_playerShip.angle())
+	var current_direction_normalized = normalizeAngle(ship.direction.angle())
 	
-	var direction_to_playerShip = (playerShip.world_position + playerShip.direction.normalized() * 200 - ship.world_position).normalized()
-	var rotation_angle = (ship.direction.angle() - direction_to_playerShip.angle())
-	if rotation_angle > angle45:
+	var angle = direction_to_player_normalized - current_direction_normalized
+	var target_rotation
+	
+	if abs(angle) < PI:
+		target_rotation = angle
+	else:
+		target_rotation = angle - 2 * PI
+		
+	if target_rotation > 0:
+		if target_rotation > angle90:
+			pirateShipInputs.right_pressed = false
+			pirateShipInputs.left_pressed = true
+		else:
+			pirateShipInputs.right_pressed = true
+			pirateShipInputs.left_pressed = false
+	else:
+		if abs(target_rotation) < angle90:
+			pirateShipInputs.right_pressed = true
+			pirateShipInputs.left_pressed = false
+		else:
+			pirateShipInputs.right_pressed = false
+			pirateShipInputs.left_pressed = true
+	pass
+
+
+func chase():
+	var target_offset = Vector2(0, 0)#playerShip.direction.normalized() * 200
+	var direction_to_playerShip = (playerShip.world_position + target_offset - ship.world_position).normalized()
+	var rotation_angle = fmod(ship.direction.angle() - direction_to_playerShip.angle() + PI, 2*PI) - PI
+	if rotation_angle > angle22:
 		pirateShipInputs.right_pressed = false
 		pirateShipInputs.left_pressed = true
-	elif rotation_angle < -angle45:
+	elif rotation_angle < -angle22:
 		pirateShipInputs.left_pressed = false
 		pirateShipInputs.right_pressed = true
 	else:
@@ -47,10 +87,14 @@ func chase():
 		pirateShipInputs.right_pressed = false
 		
 	if abs(ship.direction.angle()-playerShip.direction.angle()) > angle90:
-		ship.update_acceleration_stage(1)
+		ship.set_accelerastion_stage(1)
 	else:
-		ship.update_acceleration_stage(3)
-		
+		ship.set_accelerastion_stage(1)
+
+func in_effective_range():
+	var quad_distance = ((playerShip.world_position.x-ship.world_position.x)**2)+((playerShip.world_position.y-ship.world_position.y)**2)
+	return quad_distance <= min_distance_between
+
 func _physics_process(delta: float) -> void:
 	var position = ship.world_position
 	var is_storm = is_storm_at(position)
