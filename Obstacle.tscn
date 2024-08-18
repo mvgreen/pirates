@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://fpjddj4e6a83"]
+
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="1_iu0w6"]
+[ext_resource type="Texture2D" uid="uid://mca04e24lq5m" path="res://sprites/tile_96.png" id="2_xdgf1"]
+[ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="2_yp0eb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_abuc8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yp0eb")
+}],
+"loop": true,
+"name": &"ship",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xdgf1")
+}],
+"loop": true,
+"name": &"wrecks",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0vabo"]
+radius = 40.0
+
+[node name="Obstacle" type="Node2D"]
+script = ExtResource("1_iu0w6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_abuc8")
+animation = &"wrecks"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2, 1)
+shape = SubResource("CircleShape2D_0vabo")
