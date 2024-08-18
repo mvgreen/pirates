@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=14 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="PackedScene" uid="uid://bhoac1sqpsgjb" path="res://ship.tscn" id="1_ekyau"]
@@ -7,8 +7,9 @@
 [ext_resource type="Script" path="res://scripts/ship_render.gd" id="2_nk2qb"]
 [ext_resource type="Script" path="res://scripts/Ship.gd" id="3_mc8wv"]
 [ext_resource type="Script" path="res://scripts/obstacles.gd" id="4_smceo"]
-[ext_resource type="PackedScene" uid="uid://dya6uyvkcdeji" path="res://patterns.tscn" id="5_tousa"]
-[ext_resource type="PackedScene" path="res://PirateShipAi.tscn" id="10_ae3vb"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="4_xqak8"]
+[ext_resource type="Texture2D" uid="uid://mca04e24lq5m" path="res://sprites/tile_96.png" id="6_8a6op"]
+[ext_resource type="PackedScene" uid="uid://6ngkq5kc1do4" path="res://PirateShipAi.tscn" id="10_ae3vb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
 animations = [{
@@ -23,6 +24,9 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h71f6"]
 radius = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l62fu"]
+radius = 30.0
 
 [node name="Sea" type="Node2D"]
 
@@ -51,9 +55,18 @@ script = ExtResource("4_smceo")
 ship = NodePath("../ShipModel")
 shipRenderer = NodePath("../ShipRender")
 
-[node name="ObstaclesRenderList" type="Node2D" parent="ObstacleContainer"]
+[node name="Obstacle" type="Node2D" parent="ObstacleContainer"]
+position = Vector2(300, 200)
+script = ExtResource("4_xqak8")
 
-[node name="Patterns" parent="ObstacleContainer" instance=ExtResource("5_tousa")]
+[node name="Sprite2D" type="Sprite2D" parent="ObstacleContainer/Obstacle"]
+z_index = -1
+texture = ExtResource("6_8a6op")
+
+[node name="Area2D" type="Area2D" parent="ObstacleContainer/Obstacle"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleContainer/Obstacle/Area2D"]
+shape = SubResource("CircleShape2D_l62fu")
 
 [node name="PirateShipAi" parent="." node_paths=PackedStringArray("playerShip", "ship", "shipRenderer") instance=ExtResource("10_ae3vb")]
 playerShip = NodePath("../ShipModel")

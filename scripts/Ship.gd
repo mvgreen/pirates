@@ -37,6 +37,15 @@ func update_acceleration_stage(up: bool):
 		acceleration_stage = max(0, acceleration_stage - 1)
 	speed_limit_partition = 1.0 / 3.0 * acceleration_stage
 
+func set_accelerastion_stage(stage: int):
+	if stage > max_acceleration_stage:
+		acceleration_stage = max_acceleration_stage
+	elif stage < 0:
+		acceleration_stage = 0
+	else: 
+		acceleration_stage = stage
+	speed_limit_partition = 1.0 / 3.0 * acceleration_stage
+
 func get_steering_speed(): 
 	return helmsman_skill * PI / 4
 
