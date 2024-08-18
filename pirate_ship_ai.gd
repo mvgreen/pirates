@@ -1,26 +1,45 @@
-extends Node
+extends Node2D
 
-class_name ShipControl
-
+@export var playerShip: Ship
 @export var ship: Ship
+@export var shipRenderer: ShipRenderer
+
+var pirateShipInputs = PirateShipInputs.new()
 
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	ship.game_over.connect(on_game_over)
-
-func on_game_over():
-	print("Game Over!")
+func _ready() -> void:
+	ship.world_position = Vector2(100, 200)
+	position = ship.world_position - playerShip.world_position
 
 
+var time = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _process(delta: float) -> void:
+	position = ship.world_position - (playerShip.world_position - shipRenderer.ship_render_position)
+	rotation = ship.direction.angle()
+	
+	#time += delta
+	#if time >= 1:
+	pirateShip()
+	#	time = 0
 
-
-func _physics_process(delta):
+func pirateShip():
+	var direction_to_playerShip = (playerShip.world_position + playerShip.direction.normalized() * 200 - ship.world_position).normalized()
+	var rotation_angle = (ship.direction.angle() - direction_to_playerShip.angle())
+	if rotation_angle > 0.0:
+		pirateShipInputs.right_pressed = false
+		pirateShipInputs.left_pressed = true
+	elif rotation_angle < 0.0:
+		pirateShipInputs.left_pressed = false
+		pirateShipInputs.right_pressed = true
+	else:
+		pirateShipInputs.left_pressed = false
+		pirateShipInputs.right_pressed = false
+		
+func _physics_process(delta: float) -> void:
 	var position = ship.world_position
 	var is_storm = is_storm_at(position)
 	var is_still = is_still_at(position)
@@ -50,9 +69,9 @@ func _physics_process(delta):
 
 func update_direction(direction: Vector2, speed: float, deltaTime: float) -> Vector2:
 	var rotation = 0.0
-	if Input.is_action_pressed("direction_left"):
+	if pirateShipInputs.left_pressed:
 		rotation = -ship.get_steering_speed() * deltaTime
-	elif Input.is_action_pressed("direction_right"):
+	elif pirateShipInputs.right_pressed:
 		rotation = ship.get_steering_speed() * deltaTime
 	
 	if is_equal_approx(speed, 0.0):
@@ -72,13 +91,6 @@ func update_acceleration(position: Vector2, is_storm: bool, is_still: bool, spee
 		return ship.get_normal_acceleration()
 	else:
 		return -ship.deceleration_speed
-
-
-func _unhandled_key_input(event):
-	if event.is_action_released("direction_up"):
-		ship.update_acceleration_stage(true)
-	elif event.is_action_released("direction_down"):
-		ship.update_acceleration_stage(false)
 
 func is_storm_at(position: Vector2) -> bool:
 	return false # TODO

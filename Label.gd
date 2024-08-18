@@ -9,5 +9,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	text = "Stage: " + str(ship.acceleration_stage) + "; Speed: " + str(snapped(ship.speed, 0.01))
+	text = str(ship.world_position)
+	#text = "Stage: " + str(ship.acceleration_stage) + "; Speed: " + str(snapped(ship.speed, 0.01))
 	pass
