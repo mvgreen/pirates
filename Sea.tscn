@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scripts/Ship.gd" id="3_mc8wv"]
 [ext_resource type="Script" path="res://scripts/obstacles.gd" id="4_smceo"]
 [ext_resource type="PackedScene" uid="uid://dya6uyvkcdeji" path="res://patterns.tscn" id="5_tousa"]
-[ext_resource type="PackedScene" path="res://PirateShipAi.tscn" id="10_ae3vb"]
+[ext_resource type="PackedScene" uid="uid://dar4yl3grhgoy" path="res://PirateShipAi.tscn" id="10_ae3vb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
 animations = [{
@@ -60,7 +60,7 @@ playerShip = NodePath("../ShipModel")
 ship = NodePath("../PirateShip")
 shipRenderer = NodePath("../ShipRender")
 
-[node name="Sprite2D" type="Sprite2D" parent="PirateShipAi"]
+[node name="Sprite2D2" type="Sprite2D" parent="PirateShipAi"]
 texture = ExtResource("1_vco1m")
 
 [node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship", "pShip")]
