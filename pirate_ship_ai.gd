@@ -18,14 +18,32 @@ var active = false
 
 func on_ship_refreshed():
 	($Sprite2D as Sprite2D).visible = active
-	($Area2D/CollisionShape2D as CollisionShape2D).disabled = not active
-	ship.hull_hp = randi() % 50 + 50
+	($Area2D/CollisionShape2D as CollisionShape2D).set_deferred("disabled", not active)
+	if active:
+		ship.hull_hp = randi() % 50 + 50
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	ship = $PirateShip
 	active = false
 	on_ship_refreshed()
+	($Area2D as Area2D).area_entered.connect(on_collision)
+
+func on_collision(area: Area2D):
+	var parent = area.get_parent() 
+	if parent is Obstacle:
+		if (playerShip.world_position - ship.world_position).length() > 500:
+			return
+		var effect_type = (parent as Obstacle).effect_type
+		var effect_value = (parent as Obstacle).effect_value
+		if effect_type == Obstacle.EFFECT_DAMAGE:
+			damage(effect_value)
+	if parent is PirateShipAi:
+		var other = (parent as PirateShipAi)
+		var other_hp = other.ship.hull_hp
+		var this_hp = ship.hull_hp
+		var damage = min(other_hp, this_hp)
+		damage(damage)
 
 func damage(value: int):
 	var hp = ship.hull_hp - value
@@ -37,6 +55,8 @@ func damage(value: int):
 var time = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not active:
+		return
 	var distance_between = ((playerShip.world_position.x-ship.world_position.x)**2)+((playerShip.world_position.y-ship.world_position.y)**2)
 	position = ship.world_position - (playerShip.world_position - shipRenderer.ship_render_position)
 	rotation = ship.direction.angle()
@@ -53,12 +73,6 @@ func _process(delta: float) -> void:
 	else:
 		circling()
 	#	time = 0
-
-func normalizeAngle(angle: float) -> float:
-	if angle < 0:
-		return angle + 2*PI
-	else:
-		return angle
 
 func increase_distance():
 	var direction_difference = (ship.direction - playerShip.direction)

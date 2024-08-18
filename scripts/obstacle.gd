@@ -15,7 +15,7 @@ var effect_value: int
 
 func on_state_changed():
 	($AnimatedSprite2D as AnimatedSprite2D).visible = active
-	($Area2D/CollisionShape2D as CollisionShape2D).disabled = not active
+	($Area2D/CollisionShape2D as CollisionShape2D).set_deferred("disabled", not active)
 	if effect_type == EFFECT_DAMAGE:
 		($AnimatedSprite2D as AnimatedSprite2D).animation = "wrecks"
 	else: 

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://pirate_ship_ai.gd" id="1_h1lgf"]
 [ext_resource type="Script" path="res://scripts/Ship.gd" id="2_4jg4n"]
-[ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="3_4wd7d"]
+[ext_resource type="Texture2D" uid="uid://drlq6piqbty0s" path="res://sprites/pirate.png" id="3_lqt6o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e4y6p"]
 radius = 40.0
@@ -15,9 +15,10 @@ ship = NodePath("PirateShip")
 script = ExtResource("2_4jg4n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_4wd7d")
+texture = ExtResource("3_lqt6o")
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_e4y6p")
+debug_color = Color(0, 0.466667, 0.54902, 0.419608)
