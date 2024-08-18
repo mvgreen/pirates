@@ -2,6 +2,9 @@ extends Node
 
 @export var ship: Ship
 
+var drift_time_passed = 0.0
+var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship.game_over.connect(on_game_over)
@@ -30,6 +33,12 @@ func _physics_process(delta):
 	var speed = max(0, min(ship.speed + acceleration * delta, max_speed))
 	var direction = update_direction(ship.direction, speed, delta)
 	
+	if is_equal_approx(ship.speed, 0.0):
+		drift_time_passed += delta
+		if drift_time_passed >= 1:
+			drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
+			drift_time_passed = 0.0
+		position = position + drift_vector
 	position = position + direction * speed
 	
 	ship.world_position = position
