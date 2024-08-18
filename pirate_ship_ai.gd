@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name PirateShipAi
+
 @export var playerShip: Ship
 @export var ship: Ship
 @export var shipRenderer: ShipRenderer
@@ -12,13 +14,25 @@ var max_distance_between = 16000 # 400
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 
+var active = false
+
+func on_ship_refreshed():
+	($Sprite2D as Sprite2D).visible = active
+	($Area2D/CollisionShape2D as CollisionShape2D).disabled = not active
+	ship.hull_hp = randi() % 50 + 50
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	ship = $PirateShip
-	ship.world_position = Vector2(100, 200)
-	position = ship.world_position - playerShip.world_position
+	active = false
+	on_ship_refreshed()
 
+func damage(value: int):
+	var hp = ship.hull_hp - value
+	ship.hull_hp = max(0, hp)
+	if hp <= 0:
+		active = false
+		on_ship_refreshed()
 
 var time = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -107,10 +121,10 @@ func chase():
 		pirateShipInputs.left_pressed = false
 		pirateShipInputs.right_pressed = false
 		
-	if abs(ship.direction.angle()-playerShip.direction.angle()) > angle90:
-		ship.set_accelerastion_stage(1)
+	if (playerShip.world_position - ship.world_position).length() >= 500:
+		ship.set_accelerastion_stage(3)
 	else:
-		ship.set_accelerastion_stage(1)
+		ship.set_accelerastion_stage(max(1, playerShip.acceleration_stage))
 
 func in_effective_range():
 	var quad_distance = ((playerShip.world_position.x-ship.world_position.x)**2)+((playerShip.world_position.y-ship.world_position.y)**2)
