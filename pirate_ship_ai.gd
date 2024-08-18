@@ -51,19 +51,19 @@ func increase_distance():
 		pirateShipInputs.right_pressed = false
 		pirateShipInputs.left_pressed = false
 		return
-	
+
 	var direction_to_playerShip = (playerShip.world_position - ship.world_position).normalized()
 	var direction_to_player_normalized = normalizeAngle(direction_to_playerShip.angle())
 	var current_direction_normalized = normalizeAngle(ship.direction.angle())
-	
+
 	var angle = direction_to_player_normalized - current_direction_normalized
 	var target_rotation
-	
+
 	if abs(angle) < PI:
 		target_rotation = angle
 	else:
 		target_rotation = angle - 2 * PI
-		
+
 	if target_rotation > 0:
 		if target_rotation < angle90:
 			pirateShipInputs.right_pressed = false
@@ -86,44 +86,37 @@ func circling():
 		pirateShipInputs.right_pressed = false
 		pirateShipInputs.left_pressed = false
 		return
-	
+
 	var direction_to_playerShip = (playerShip.world_position - ship.world_position).normalized()
-	var direction_to_player_normalized = normalizeAngle(direction_to_playerShip.angle())
-	var current_direction_normalized = normalizeAngle(ship.direction.angle())
 	
-	var angle = direction_to_player_normalized - current_direction_normalized
+	var angle = ship.direction.angle_to(direction_to_playerShip)
 	var target_rotation
 	
-	if abs(angle) < PI:
-		target_rotation = angle
+	# rotate away from player if < 90 degrees
+	if abs(angle) < PI/2:
+		target_rotation = -angle
 	else:
-		target_rotation = angle - 2 * PI
+		target_rotation = angle
 		
 	if target_rotation > 0:
-		if target_rotation > angle90:
-			pirateShipInputs.right_pressed = false
-			pirateShipInputs.left_pressed = true
-		else:
-			pirateShipInputs.right_pressed = true
-			pirateShipInputs.left_pressed = false
+		pirateShipInputs.right_pressed = true
+		pirateShipInputs.left_pressed = false
+	elif target_rotation < 0:
+		pirateShipInputs.right_pressed = false
+		pirateShipInputs.left_pressed = true
 	else:
-		if abs(target_rotation) < angle90:
-			pirateShipInputs.right_pressed = true
-			pirateShipInputs.left_pressed = false
-		else:
-			pirateShipInputs.right_pressed = false
-			pirateShipInputs.left_pressed = true
-	pass
+		pirateShipInputs.right_pressed = false
+		pirateShipInputs.left_pressed = false
 
 
 func chase():
 	var target_offset = Vector2(0, 0)#playerShip.direction.normalized() * 200
 	var direction_to_playerShip = (playerShip.world_position + target_offset - ship.world_position).normalized()
-	var rotation_angle = fmod(ship.direction.angle() - direction_to_playerShip.angle() + PI, 2*PI) - PI
-	if rotation_angle > 0.0:
+	var rotation_angle = ship.direction.angle_to(direction_to_playerShip)
+	if rotation_angle < -angle22:
 		pirateShipInputs.right_pressed = false
 		pirateShipInputs.left_pressed = true
-	elif rotation_angle < 0.0:
+	elif rotation_angle > angle22:
 		pirateShipInputs.left_pressed = false
 		pirateShipInputs.right_pressed = true
 	else:
