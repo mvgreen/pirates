@@ -15,6 +15,7 @@ ship = NodePath("PirateShip")
 script = ExtResource("2_4jg4n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 99
 texture = ExtResource("3_lqt6o")
 
 [node name="Area2D" type="Area2D" parent="."]

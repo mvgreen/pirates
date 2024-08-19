@@ -32,6 +32,7 @@ script = ExtResource("2_nk2qb")
 ship_model = NodePath("../ShipModel")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="ShipRender"]
+z_index = 100
 sprite_frames = SubResource("SpriteFrames_d4ovq")
 
 [node name="Area2D" type="Area2D" parent="ShipRender"]

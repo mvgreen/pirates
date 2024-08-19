@@ -19,14 +19,27 @@ var obstacle_prefab: PackedScene
 var island_prefab: PackedScene
 var pirate_prefab: PackedScene
 
+var disabled = false
+
 func _ready():
 	obstacle_prefab = preload("res://Obstacle.tscn")
 	pirate_prefab = preload("res://PirateShipAi.tscn")
 	island_prefab = preload("res://Island.tscn")
 	
-	current_chunk = Vector2(1000, 1000)
+	current_chunk = Vector2(-1000, -1000)
 	fill_obstacles_pool()
 	update_loaded_chunks()
+
+func _unhandled_key_input(event):
+	if event.is_action_released("force_unload"):
+		set_obstacles_disabled(!disabled)
+
+func set_obstacles_disabled(value: bool):
+	disabled = value
+	if disabled:
+		forced_unload()
+	else:
+		current_chunk = Vector2(-1000, -1000)
 
 
 func fill_obstacles_pool():
@@ -53,8 +66,10 @@ func fill_obstacles_pool():
 		island_pool[island] = false
 
 func _process(delta):
+	if disabled:
+		forced_unload()
+		return
 	update_children_relative_position()
-
 	update_loaded_chunks()
 
 
@@ -141,6 +156,39 @@ func unload_islands(chunk: Vector2):
 	for item in to_unload:
 		active_islands.erase(item)
 
+
+func forced_unload():
+	for chunk in active_obstacles.keys():
+		var obstacle_list = active_obstacles[chunk]
+		for obstacle in obstacle_list:
+			(obstacle as Obstacle).active = false
+			(obstacle as Obstacle).on_state_changed()
+			obstacles_pool[obstacle] = false
+	
+	active_obstacles.clear()
+	
+	var disabled_pirates = []
+	for pirate in active_pirates:
+		(pirate as PirateShipAi).active = false
+		(pirate as PirateShipAi).on_ship_refreshed()
+		disabled_pirates.append(pirate)
+	
+	for pirate in disabled_pirates:
+		active_pirates.erase(pirate)
+		pirates_pool[pirate] = false
+	
+	var to_unload = []
+	for isl in active_islands:
+		var island = isl as Island
+		to_unload.append(island)
+		island.active = false
+		island.on_active_updated()
+		island_pool[island] = false
+	
+	for item in to_unload:
+		active_islands.erase(item)
+	
+	loaded_chunks.clear()
 
 func unload_chunk(chunk: Vector2):
 	unload_obstacles(chunk)
