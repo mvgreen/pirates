@@ -54,8 +54,9 @@ shipRenderer = NodePath("../ShipRender")
 
 [node name="PiratesRenderList" type="Node2D" parent="ObstacleContainer"]
 
-[node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship")]
+[node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship", "pirateRenderList")]
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("1_74rmc")
 ship = NodePath("../ShipModel")
+pirateRenderList = NodePath("../ObstacleContainer/PiratesRenderList")

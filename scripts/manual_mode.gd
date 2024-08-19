@@ -33,6 +33,7 @@ func _process(delta):
 	
 func check_pirateShip_around():
 	var pirates = pirateRenderList.get_children()
+	var amountOfHits = 0
 	for p in pirates:
 		var pirateShip = p as PirateShipAi
 		if not pirateShip.active:
@@ -42,15 +43,27 @@ func check_pirateShip_around():
 			if angle_between >= angle45 and angle_between <= angle135 and ship.right_cannons_time <= 0:
 				print("right side")
 				for i in range(ship.side_cannons):
-					pass
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
 				ship.right_cannons_time = ship.get_reload_time()
 				
 			elif angle_between <= -angle45 and angle_between >= -angle135 and ship.left_cannons_time <= 0:
 				print("left side")
+				for i in range(ship.side_cannons):
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
 				ship.left_cannons_time = ship.get_reload_time()
+				
 			elif angle_between >= -angle45 and angle_between <= angle45 and ship.front_cannons_time <= 0:
 				print("front")
+				for i in range(ship.front_cannons):
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
 				ship.front_cannons_time = ship.get_reload_time()
+				
 			else:
 				pass
 
