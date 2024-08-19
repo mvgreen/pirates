@@ -46,6 +46,7 @@ func fill_obstacles_pool():
 	
 	for i in range(100):
 		var island = island_prefab.instantiate() as Island
+		island.position = Vector2(-2000, -2000)
 		island.active = false
 		island.on_active_updated()
 		$IslandsRenderList.add_child(island)

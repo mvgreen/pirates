@@ -6,6 +6,8 @@ class_name ShipRenderer
 
 var ship_render_position: Vector2
 
+var reset_collider = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship_model.world_position = Vector2(750000,1600000)#Vector2(4169000, 1370000)
@@ -16,9 +18,16 @@ func _ready():
 	
 	($Area2D as Area2D).area_entered.connect(on_collision)
 
-
 func on_collision(area: Area2D):
 	var parent = area.get_parent()
+	if parent is Island:
+		if is_equal_approx(ship_model.speed, 0.0):
+			var away_from_island = (ship_model.world_position - parent.world_position).normalized()
+			ship_model.world_position += away_from_island * 20
+		else:
+			ship_model.world_position -= ship_model.direction * 20
+		ship_model.set_accelerastion_stage(0)
+		ship_model.speed = 0
 	if parent is PirateShipAi:
 		var enemy = (parent as PirateShipAi)
 		var enemy_hp = enemy.ship.hull_hp
