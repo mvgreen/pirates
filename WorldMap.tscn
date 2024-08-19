@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw58gxkwed124"]
+
+[ext_resource type="Texture2D" uid="uid://dfrfft4dpr83u" path="res://sprites/map.png" id="1_swlix"]
+[ext_resource type="Texture2D" uid="uid://pliio0ukttr2" path="res://sprites/table.png" id="1_xyq8k"]
+
+[node name="WorldMap" type="Node2D"]
+
+[node name="Table" type="Sprite2D" parent="."]
+position = Vector2(500, 300)
+texture = ExtResource("1_xyq8k")
+
+[node name="Map" type="Sprite2D" parent="."]
+position = Vector2(500, 300)
+texture = ExtResource("1_swlix")

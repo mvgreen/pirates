@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpih2yptg6kfy"]
+
+[ext_resource type="Script" path="res://scripts/island.gd" id="1_i8qra"]
+[ext_resource type="Texture2D" uid="uid://bu8kpfi5sc4mg" path="res://sprites/orange_square.png" id="2_2swk1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xvdws"]
+size = Vector2(1000, 1000)
+
+[node name="Island" type="Node2D"]
+script = ExtResource("1_i8qra")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_2swk1")
+
+[node name="Land" type="Area2D" parent="."]
+disable_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Land"]
+shape = SubResource("RectangleShape2D_xvdws")
