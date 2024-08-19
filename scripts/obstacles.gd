@@ -9,17 +9,20 @@ var loaded_chunks = []
 
 var obstacles_pool: Dictionary
 var active_obstacles: Dictionary
+var active_islands: Array
 
 var pirates_pool: Dictionary
 var active_pirates: Array
+var island_pool: Dictionary
 
 var obstacle_prefab: PackedScene
-
+var island_prefab: PackedScene
 var pirate_prefab: PackedScene
 
 func _ready():
 	obstacle_prefab = preload("res://Obstacle.tscn")
 	pirate_prefab = preload("res://PirateShipAi.tscn")
+	island_prefab = preload("res://Island.tscn")
 	
 	current_chunk = Vector2(1000, 1000)
 	fill_obstacles_pool()
@@ -40,6 +43,13 @@ func fill_obstacles_pool():
 		pirate.shipRenderer = shipRenderer
 		$PiratesRenderList.add_child(pirate)
 		pirates_pool[pirate] = false
+	
+	for i in range(100):
+		var island = island_prefab.instantiate() as Island
+		island.active = false
+		island.on_active_updated()
+		$IslandsRenderList.add_child(island)
+		island_pool[island] = false
 
 func _process(delta):
 	update_children_relative_position()
@@ -60,6 +70,11 @@ func update_children_relative_position():
 	for child in children:
 		if child is Obstacle:
 			child.position = child.initial_position - (ship.world_position - shipRenderer.ship_render_position)
+	
+	var islands = $IslandsRenderList.get_children()
+	for island in islands:
+		if island is Island:
+			island.position = island.initial_position - (ship.world_position - shipRenderer.ship_render_position)
 
 func update_chunks():
 	var chunks_to_unload = []
@@ -85,7 +100,7 @@ func update_chunks():
 	loaded_chunks.append_array(chunks_to_load)
 
 
-func unload_chunk(chunk: Vector2):
+func unload_obstacles(chunk: Vector2):
 	if not active_obstacles.has(chunk):
 		print("empty chunk")
 		return
@@ -96,7 +111,9 @@ func unload_chunk(chunk: Vector2):
 		(obstacle as Obstacle).on_state_changed()
 		obstacles_pool[obstacle] = false
 	active_obstacles.erase(chunk)
-	
+
+
+func unload_pirates(chunk: Vector2):
 	var disabled_pirates = []
 	for pirate in active_pirates:
 		if ((pirate as PirateShipAi).ship.world_position - ship.world_position).length() < 2000:
@@ -109,7 +126,45 @@ func unload_chunk(chunk: Vector2):
 		active_pirates.erase(pirate)
 		pirates_pool[pirate] = false
 
+
+func unload_islands(chunk: Vector2):
+	var to_unload = []
+	for isl in active_islands:
+		var island = isl as Island
+		if (island.world_position as Vector2).distance_squared_to(ship.world_position) >= 2000 * 2000:
+			to_unload.append(island)
+			island.active = false
+			island.on_active_updated()
+			island_pool[island] = false
+	
+	for item in to_unload:
+		active_islands.erase(item)
+
+
+func unload_chunk(chunk: Vector2):
+	unload_obstacles(chunk)
+	unload_pirates(chunk)
+	unload_islands(chunk)
+
+func is_island(chunk: Vector2):
+	for island in ($Patterns as Patterns).island_locations:
+		var distance = chunk.distance_squared_to(island)
+		if distance <= 9*9:
+			print("Loaded " + str(chunk))
+			return true
+	return false
+
 func load_chunk(chunk: Vector2, intensity: int):
+	if is_island(chunk):
+		var island = island_pool.keys().back() as Island
+		island_pool.erase(island)
+		active_islands.append(island)
+		island.active = true
+		island.world_position = chunk * 1000
+		island.initial_position = island.world_position
+		island.on_active_updated()
+		return
+	
 	var pattern_id = randi() % 100
 	var pattern = ($Patterns as Patterns).pattern_list[pattern_id]
 	var list = []
@@ -121,7 +176,7 @@ func load_chunk(chunk: Vector2, intensity: int):
 				continue
 			var pirate = pirates_pool.keys().back() as PirateShipAi
 			pirate.active = true
-			pirate.ship.world_position = position + chunk * 1000 - shipRenderer.ship_render_position
+			pirate.ship.world_position = position + chunk * 1000
 			pirate.on_ship_refreshed()
 			active_pirates.append(pirate)
 			pirates_pool.erase(pirate)

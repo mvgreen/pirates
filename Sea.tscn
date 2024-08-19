@@ -53,6 +53,8 @@ shipRenderer = NodePath("../ShipRender")
 
 [node name="PiratesRenderList" type="Node2D" parent="ObstacleContainer"]
 
+[node name="IslandsRenderList" type="Node2D" parent="ObstacleContainer"]
+
 [node name="Label" type="Label" parent="." node_paths=PackedStringArray("ship")]
 offset_right = 40.0
 offset_bottom = 23.0

@@ -1,0 +1,77 @@
+[
+  {
+    "x": 220,
+    "y": 1420,
+    "inhabited": true
+  },
+  {
+    "x": 540,
+    "y": 990,
+    "inhabited": true
+  },
+  {
+    "x": 430,
+    "y": 120,
+    "inhabited": true
+  },
+  {
+    "x": 1560,
+    "y": 230,
+    "inhabited": true
+  },
+  {
+    "x": 2270,
+    "y": 850,
+    "inhabited": true
+  },
+  {
+    "x": 3620,
+    "y": 350,
+    "inhabited": true
+  },
+  {
+    "x": 4210,
+    "y": 550,
+    "inhabited": true
+  },
+  {
+    "x": 4210,
+    "y": 1370,
+    "inhabited": true
+  },
+  {
+    "x": 3670,
+    "y": 1740,
+    "inhabited": true
+  },
+  {
+    "x": 4020,
+    "y": 2240,
+    "inhabited": true
+  },
+  {
+    "x": 2790,
+    "y": 2310,
+    "inhabited": true
+  },
+  {
+    "x": 1410,
+    "y": 2160,
+    "inhabited": true
+  },
+  {
+    "x": 760,
+    "y": 1635,
+    "inhabited": true
+  },
+  {
+    "x": 740,
+    "y": 1600,
+    "inhabited": true
+  },
+  {
+    "x": 2870,
+    "y": 430,
+    "inhabited": true
+  }
+]
