@@ -16,7 +16,6 @@ func _ready():
 	
 	($Area2D as Area2D).area_entered.connect(on_collision)
 
-
 func on_collision(area: Area2D):
 	var parent = area.get_parent()
 	if parent is PirateShipAi:

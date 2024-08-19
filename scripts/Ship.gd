@@ -14,7 +14,6 @@ var carpenters_cost = 2
 var hull_hp = 100
 var side_cannons = 10
 var front_cannons = 4
-var back_cannons = 4
 
 var world_position = Vector2(0.0, 0.0)
 var direction = Vector2.DOWN
@@ -29,6 +28,10 @@ var max_speed_normal = 10
 var max_speed_storm = 15
 
 var deceleration_speed = 1
+
+var left_cannons_time = 0
+var right_cannons_time = 0
+var front_cannons_time = 0
 
 func update_acceleration_stage(up: bool):
 	if up:
