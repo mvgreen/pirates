@@ -6,6 +6,7 @@ class_name ShipControl
 @export var game_over_label: Node2D
 @export var sprite: AnimatedSprite2D
 @export var pirateRenderList: Node2D
+@export var ammo: Ammo
 
 var min_distance_between = 160000
 var angle45 = PI/4
@@ -52,6 +53,7 @@ func check_pirateShip_around():
 				for i in range(ship.side_cannons):
 					if randf() <= ship.get_gunners_hit_chance():
 						amountOfHits += 1
+				ammo.set_hit_count("Right", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.right_cannons_time = ship.get_reload_time()
 
@@ -60,6 +62,7 @@ func check_pirateShip_around():
 				for i in range(ship.side_cannons):
 					if randf() <= ship.get_gunners_hit_chance():
 						amountOfHits += 1
+				ammo.set_hit_count("Left", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.left_cannons_time = ship.get_reload_time()
 
@@ -68,6 +71,7 @@ func check_pirateShip_around():
 				for i in range(ship.front_cannons):
 					if randf() <= ship.get_gunners_hit_chance():
 						amountOfHits += 1
+				ammo.set_hit_count("Front", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.front_cannons_time = ship.get_reload_time()
 

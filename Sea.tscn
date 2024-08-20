@@ -64,11 +64,12 @@ sprite_frames = SubResource("SpriteFrames_d4ovq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipRender/Area2D"]
 shape = SubResource("CircleShape2D_h71f6")
 
-[node name="ManualMode" parent="." node_paths=PackedStringArray("ship", "game_over_label", "sprite", "pirateRenderList") instance=ExtResource("2_cijco")]
+[node name="ManualMode" parent="." node_paths=PackedStringArray("ship", "game_over_label", "sprite", "pirateRenderList", "ammo") instance=ExtResource("2_cijco")]
 ship = NodePath("../ShipModel")
 game_over_label = NodePath("../GameOverNode")
 sprite = NodePath("../ShipRender/Sprite")
 pirateRenderList = NodePath("../ObstacleContainer/PiratesRenderList")
+ammo = NodePath("../Ammo")
 
 [node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer")]
 script = ExtResource("4_smceo")
