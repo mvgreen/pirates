@@ -5,6 +5,9 @@ class_name Ship
 signal game_over
 @export var hpBar: Label
 
+var gold = 0
+var rum = 5
+
 var helmsman_skill = 2
 var seamen_skill = 2
 var gunners_skill = 2

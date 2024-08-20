@@ -18,6 +18,14 @@ func _ready():
 	
 	($Area2D as Area2D).area_entered.connect(on_collision)
 
+func on_pirate_destroyed():
+	var r = randf()
+	if r >= 0.9:
+		ship_model.rum += 1
+	var g = randi() % 100 + 24
+	ship_model.gold += g
+	pass
+
 func explosion_front():
 	($ExplosionFront as AnimatedSprite2D).frame = 0
 	($ExplosionFront as AnimatedSprite2D).play()

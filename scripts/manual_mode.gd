@@ -23,6 +23,7 @@ var is_world_mode = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship.game_over.connect(on_game_over)
+	
 	sprite.animation = "default"
 	destroyAnimation.visible = false
 

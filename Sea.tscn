@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=18 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="PackedScene" uid="uid://bguv7nl60urxb" path="res://manual_mode.tscn" id="2_cijco"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bw58gxkwed124" path="res://WorldMap.tscn" id="7_tldm6"]
 [ext_resource type="Texture2D" uid="uid://oop34xc31ny" path="res://sprites/sea_tile.png" id="9_r1j1e"]
 [ext_resource type="Script" path="res://ammo.gd" id="10_wgner"]
+[ext_resource type="Script" path="res://resources.gd" id="12_i7y0k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h71f6"]
 radius = 40.0
@@ -172,5 +173,18 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="Right" type="Label" parent="Ammo"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Resources" type="Node2D" parent="." node_paths=PackedStringArray("ship")]
+position = Vector2(900, 0)
+script = ExtResource("12_i7y0k")
+ship = NodePath("../ShipModel")
+
+[node name="Gold" type="Label" parent="Resources"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Rum" type="Label" parent="Resources"]
 offset_right = 40.0
 offset_bottom = 23.0

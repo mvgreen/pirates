@@ -26,6 +26,7 @@ func on_ship_refreshed():
 		($AnimatedSprite2D as AnimatedSprite2D).frame = 0
 		($AnimatedSprite2D as AnimatedSprite2D).play()
 		rotation = 0
+		shipRenderer.on_pirate_destroyed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
