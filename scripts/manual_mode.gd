@@ -36,11 +36,6 @@ func _physics_process(delta):
 	
 	var acceleration = update_acceleration(position, is_storm, is_still, max_speed * ship.speed_limit_partition, ship.speed)
 	var speed = max(0, min(ship.speed + acceleration * delta, max_speed))
-	
-	if is_world_mode:
-		max_speed *= world_mode_modifier
-		acceleration *= world_mode_modifier
-		speed *= world_mode_modifier
 		
 	var direction = update_direction(ship.direction, speed, delta)
 	
@@ -50,8 +45,16 @@ func _physics_process(delta):
 			drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 			drift_time_passed = 0.0
 		position = position + drift_vector
-	position = position + direction * speed
+	var effective_speed
+	if is_world_mode:
+		if ship.acceleration_stage == 0:
+			effective_speed = Vector2(0,0)
+		else:
+			effective_speed = direction * max_speed * world_mode_modifier
+	else:
+		effective_speed = direction * speed
 	
+	position = position + effective_speed
 	ship.world_position = position
 	ship.speed = speed
 	ship.direction = direction

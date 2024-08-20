@@ -38,8 +38,14 @@ func set_obstacles_disabled(value: bool):
 	if disabled:
 		forced_unload()
 	else:
+		#var nearest_island = get_nearest_island()
+		#if nearest_island.length_squared() <= 
+		# reset current chunk to force the real current chunk to load
 		current_chunk = Vector2(-1000, -1000)
 
+
+func get_nearest_island() -> Vector2:
+	return Vector2(0,0)
 
 func fill_obstacles_pool():
 	for i in range(300):
