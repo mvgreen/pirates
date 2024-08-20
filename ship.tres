@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=14 format=3 uid="uid://c7k2451wwor80"]
+[gd_resource type="SpriteFrames" load_steps=15 format=3 uid="uid://c7k2451wwor80"]
 
 [ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_eurix"]
 [ext_resource type="Texture2D" uid="uid://cvphefiobl8pr" path="res://sprites/destroy/explosion-b1.png" id="2_ikdj3"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dsuwjxuf45jgw" path="res://sprites/destroy/explosion-b11.png" id="11_qfhis"]
 [ext_resource type="Texture2D" uid="uid://beehn6wphcorf" path="res://sprites/destroy/explosion-b12.png" id="12_p31jr"]
 [ext_resource type="Texture2D" uid="uid://dx44v4xuntvv2" path="res://sprites/explosion/explosion-g1.png" id="13_3hr0c"]
+[ext_resource type="Texture2D" uid="uid://drlq6piqbty0s" path="res://sprites/pirate.png" id="14_esg4s"]
 
 [resource]
 animations = [{
@@ -25,6 +26,9 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_3hr0c")
+}, {
 "duration": 1.0,
 "texture": ExtResource("2_ikdj3")
 }, {
@@ -63,5 +67,13 @@ animations = [{
 }],
 "loop": false,
 "name": &"destroyed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_esg4s")
+}],
+"loop": true,
+"name": &"pirate",
 "speed": 5.0
 }]

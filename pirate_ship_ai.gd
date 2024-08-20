@@ -17,13 +17,20 @@ var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 var active = false
 
 func on_ship_refreshed():
-	($Sprite2D as Sprite2D).visible = active
 	($Area2D/CollisionShape2D as CollisionShape2D).set_deferred("disabled", not active)
 	if active:
 		ship.hull_hp = randi() % 50 + 50
+		($AnimatedSprite2D as AnimatedSprite2D).animation = "pirate"
+	else:
+		($AnimatedSprite2D as AnimatedSprite2D).animation = "destroyed"
+		($AnimatedSprite2D as AnimatedSprite2D).frame = 0
+		($AnimatedSprite2D as AnimatedSprite2D).play()
+		rotation = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$AnimatedSprite2D.animation = "destroyed"
+	$AnimatedSprite2D.frame = 0
 	ship = $PirateShip
 	active = false
 	on_ship_refreshed()
