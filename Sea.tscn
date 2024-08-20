@@ -1,26 +1,16 @@
 [gd_scene load_steps=17 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
-[ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
 [ext_resource type="PackedScene" uid="uid://bguv7nl60urxb" path="res://manual_mode.tscn" id="2_cijco"]
 [ext_resource type="Script" path="res://scripts/ship_render.gd" id="2_nk2qb"]
 [ext_resource type="Script" path="res://scripts/Ship.gd" id="3_mc8wv"]
+[ext_resource type="SpriteFrames" uid="uid://c7k2451wwor80" path="res://ship.tres" id="3_ts050"]
+[ext_resource type="SpriteFrames" uid="uid://bfwhp5ga8cfyi" path="res://smoke.tres" id="4_2jgxj"]
 [ext_resource type="Script" path="res://scripts/obstacles.gd" id="4_smceo"]
 [ext_resource type="PackedScene" uid="uid://dya6uyvkcdeji" path="res://patterns.tscn" id="5_tousa"]
 [ext_resource type="PackedScene" uid="uid://bw58gxkwed124" path="res://WorldMap.tscn" id="7_tldm6"]
 [ext_resource type="Texture2D" uid="uid://oop34xc31ny" path="res://sprites/sea_tile.png" id="9_r1j1e"]
 [ext_resource type="Script" path="res://ammo.gd" id="10_wgner"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_vco1m")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h71f6"]
 radius = 40.0
@@ -52,24 +42,60 @@ script = ExtResource("3_mc8wv")
 hpBar = NodePath("../HpNode/HpBar")
 
 [node name="ShipRender" type="Node2D" parent="." node_paths=PackedStringArray("ship_model")]
+z_index = 100
 script = ExtResource("2_nk2qb")
 ship_model = NodePath("../ShipModel")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="ShipRender"]
-z_index = 100
-sprite_frames = SubResource("SpriteFrames_d4ovq")
+sprite_frames = ExtResource("3_ts050")
+animation = &"destroyed"
 
 [node name="Area2D" type="Area2D" parent="ShipRender"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipRender/Area2D"]
 shape = SubResource("CircleShape2D_h71f6")
 
-[node name="ManualMode" parent="." node_paths=PackedStringArray("ship", "game_over_label", "sprite", "pirateRenderList", "ammo") instance=ExtResource("2_cijco")]
+[node name="ExplosionFront" type="AnimatedSprite2D" parent="ShipRender"]
+z_index = 1
+position = Vector2(40, 0)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionLeft1" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(0, -25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionLeft2" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(35, -25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionLeft3" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(-35, -25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionRight1" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(0, 25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionRight2" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(-35, 25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="ExplosionRight3" type="AnimatedSprite2D" parent="ShipRender"]
+position = Vector2(35, 25)
+sprite_frames = ExtResource("4_2jgxj")
+
+[node name="DestroyAnimation" type="AnimatedSprite2D" parent="ShipRender"]
+sprite_frames = ExtResource("3_ts050")
+animation = &"destroyed"
+
+[node name="ManualMode" parent="." node_paths=PackedStringArray("ship", "game_over_label", "sprite", "pirateRenderList", "ammo", "shipRenderer", "destroyAnimation") instance=ExtResource("2_cijco")]
 ship = NodePath("../ShipModel")
 game_over_label = NodePath("../GameOverNode")
 sprite = NodePath("../ShipRender/Sprite")
 pirateRenderList = NodePath("../ObstacleContainer/PiratesRenderList")
 ammo = NodePath("../Ammo")
+shipRenderer = NodePath("../ShipRender")
+destroyAnimation = NodePath("../ShipRender/DestroyAnimation")
 
 [node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer")]
 script = ExtResource("4_smceo")

@@ -7,6 +7,8 @@ class_name ShipControl
 @export var sprite: AnimatedSprite2D
 @export var pirateRenderList: Node2D
 @export var ammo: Ammo
+@export var shipRenderer: ShipRenderer
+@export var destroyAnimation: AnimatedSprite2D
 
 var min_distance_between = 160000
 var angle45 = PI/4
@@ -21,11 +23,20 @@ var is_world_mode = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship.game_over.connect(on_game_over)
+	sprite.animation = "default"
+	destroyAnimation.visible = false
 
 func on_game_over():
 	print("Game Over!")
+	if game_over_label.visible:
+		return
+	ship.set_accelerastion_stage(0)
+	ship.speed = 0
 	game_over_label.visible = true
 	sprite.visible = false
+	destroyAnimation.visible = true
+	destroyAnimation.frame = 0
+	destroyAnimation.play()
 
 func update_reload_time(delta):
 	if ship.right_cannons_time > 0:
@@ -38,6 +49,8 @@ func update_reload_time(delta):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	update_reload_time(delta)
+	if game_over_label.visible:
+		shipRenderer.rotation = 0
 
 func check_pirateShip_around():
 	var pirates = pirateRenderList.get_children()
@@ -56,6 +69,7 @@ func check_pirateShip_around():
 				ammo.set_hit_count("Right", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.right_cannons_time = ship.get_reload_time()
+				shipRenderer.explosion_right()
 
 			elif angle_between <= -angle45 and angle_between >= -angle135 and ship.left_cannons_time <= 0:
 				print("left side")
@@ -65,6 +79,7 @@ func check_pirateShip_around():
 				ammo.set_hit_count("Left", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.left_cannons_time = ship.get_reload_time()
+				shipRenderer.explosion_left()
 
 			elif angle_between >= -angle45 and angle_between <= angle45 and ship.front_cannons_time <= 0:
 				print("front")
@@ -74,6 +89,7 @@ func check_pirateShip_around():
 				ammo.set_hit_count("Front", amountOfHits)
 				pirateShip.damage(amountOfHits * 2)
 				ship.front_cannons_time = ship.get_reload_time()
+				shipRenderer.explosion_front()
 
 			else:
 				pass

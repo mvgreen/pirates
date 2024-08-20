@@ -18,6 +18,27 @@ func _ready():
 	
 	($Area2D as Area2D).area_entered.connect(on_collision)
 
+func explosion_front():
+	($ExplosionFront as AnimatedSprite2D).frame = 0
+	($ExplosionFront as AnimatedSprite2D).play()
+
+func explosion_left():
+	($ExplosionLeft1 as AnimatedSprite2D).frame = 0
+	($ExplosionLeft1 as AnimatedSprite2D).play()
+	($ExplosionLeft2 as AnimatedSprite2D).frame = 0
+	($ExplosionLeft2 as AnimatedSprite2D).play()
+	($ExplosionLeft3 as AnimatedSprite2D).frame = 0
+	($ExplosionLeft3 as AnimatedSprite2D).play()
+
+
+func explosion_right():
+	($ExplosionRight1 as AnimatedSprite2D).frame = 0
+	($ExplosionRight1 as AnimatedSprite2D).play()
+	($ExplosionRight2 as AnimatedSprite2D).frame = 0
+	($ExplosionRight2 as AnimatedSprite2D).play()
+	($ExplosionRight3 as AnimatedSprite2D).frame = 0
+	($ExplosionRight3 as AnimatedSprite2D).play()
+
 func on_collision(area: Area2D):
 	var parent = area.get_parent()
 	if parent is Island:
