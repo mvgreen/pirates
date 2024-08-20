@@ -38,14 +38,43 @@ func set_obstacles_disabled(value: bool):
 	if disabled:
 		forced_unload()
 	else:
-		#var nearest_island = get_nearest_island()
-		#if nearest_island.length_squared() <= 
-		# reset current chunk to force the real current chunk to load
+		var ship_chunk_x = floor(abs(ship.world_position.x) / 1000) * sign(ship.world_position.x)
+		var ship_chunk_y = floor(abs(ship.world_position.y) / 1000) * sign(ship.world_position.y)
+		var ship_chunk = Vector2(ship_chunk_x, ship_chunk_y)
+		var to_nearest_island = get_vector_to_nearest_island(ship_chunk)
+		var distance = to_nearest_island.length_squared()
+		if distance <= 100 * 100:
+			snap_ship_to_island(to_nearest_island)
+		#reset current chunk to force the real current chunk to load
 		current_chunk = Vector2(-1000, -1000)
 
 
-func get_nearest_island() -> Vector2:
-	return Vector2(0,0)
+func get_vector_to_nearest_island(ship_chunk: Vector2) -> Vector2:
+	var min = ($Patterns as Patterns).island_locations.front() as Vector2
+	for island_location in ($Patterns as Patterns).island_locations:
+		var v = island_location as Vector2
+		if v.distance_squared_to(ship_chunk) < min.distance_squared_to(ship_chunk):
+			min = v
+	return min - ship_chunk
+	
+
+func snap_ship_to_island(direction: Vector2):
+	var target_vector: Vector2
+	if direction == Vector2(0,0):
+		return
+	var angle = direction.angle()
+	if abs(angle) <= PI / 4:
+		target_vector = Vector2.LEFT
+	elif abs(angle) >= PI * 3 / 4:
+		target_vector = Vector2.RIGHT
+	elif angle <= PI * 3 / 4 and angle > 0:
+		target_vector = Vector2.UP
+	else:
+		target_vector = Vector2.DOWN
+	
+	target_vector *= 11 # move to chunk next to the edge of the island
+	
+	ship.world_position += (direction + target_vector) * 1000 # convert position to world coordinates
 
 func fill_obstacles_pool():
 	for i in range(300):
