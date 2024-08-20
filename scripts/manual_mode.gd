@@ -5,6 +5,11 @@ class_name ShipControl
 @export var ship: Ship
 @export var game_over_label: Node2D
 @export var sprite: AnimatedSprite2D
+@export var pirateRenderList: Node2D
+
+var min_distance_between = 160000
+var angle45 = PI/4
+var angle135 = PI*3/4
 
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
@@ -21,10 +26,53 @@ func on_game_over():
 	game_over_label.visible = true
 	sprite.visible = false
 
+func update_reload_time(delta):
+	if ship.right_cannons_time > 0:
+		ship.right_cannons_time -= delta
+	if ship.left_cannons_time > 0:
+		ship.left_cannons_time -= delta
+	if ship.front_cannons_time > 0:
+		ship.front_cannons_time -= delta
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	update_reload_time(delta)
 
+func check_pirateShip_around():
+	var pirates = pirateRenderList.get_children()
+	var amountOfHits = 0
+	for p in pirates:
+		var pirateShip = p as PirateShipAi
+		if not pirateShip.active:
+			continue
+		if pirateShip.ship.world_position.distance_squared_to(ship.world_position) <= min_distance_between:
+			var angle_between = ship.direction.angle_to(pirateShip.ship.world_position - ship.world_position)
+			if angle_between >= angle45 and angle_between <= angle135 and ship.right_cannons_time <= 0:
+				print("right side")
+				for i in range(ship.side_cannons):
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
+				ship.right_cannons_time = ship.get_reload_time()
+
+			elif angle_between <= -angle45 and angle_between >= -angle135 and ship.left_cannons_time <= 0:
+				print("left side")
+				for i in range(ship.side_cannons):
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
+				ship.left_cannons_time = ship.get_reload_time()
+
+			elif angle_between >= -angle45 and angle_between <= angle45 and ship.front_cannons_time <= 0:
+				print("front")
+				for i in range(ship.front_cannons):
+					if randf() <= ship.get_gunners_hit_chance():
+						amountOfHits += 1
+				pirateShip.damage(amountOfHits * 2)
+				ship.front_cannons_time = ship.get_reload_time()
+
+			else:
+				pass
 
 func _physics_process(delta):
 	var position = ship.world_position
@@ -39,7 +87,7 @@ func _physics_process(delta):
 	
 	var acceleration = update_acceleration(position, is_storm, is_still, max_speed * ship.speed_limit_partition, ship.speed)
 	var speed = max(0, min(ship.speed + acceleration * delta, max_speed))
-		
+
 	var direction = update_direction(ship.direction, speed, delta)
 	
 	if is_equal_approx(ship.speed, 0.0):
@@ -94,6 +142,8 @@ func _unhandled_key_input(event):
 		ship.update_acceleration_stage(true)
 	elif event.is_action_released("direction_down"):
 		ship.update_acceleration_stage(false)
+	elif event.is_action_released("fire"):
+		check_pirateShip_around()
 
 func is_storm_at(position: Vector2) -> bool:
 	return false # TODO

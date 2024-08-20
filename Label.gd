@@ -1,7 +1,7 @@
 extends Label
 
 @export var ship: Ship
-@export var pShip: Ship
+@export var pirateRenderList: Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
