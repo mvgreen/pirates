@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=14 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
@@ -23,10 +23,20 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_h71f6"]
 radius = 40.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_sm5qk"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_i06tg"]
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_vfqgk"]
+font_size = 24
+
 [node name="Sea" type="Node2D"]
 
-[node name="ShipModel" type="Node" parent="."]
+[node name="ShipModel" type="Node" parent="." node_paths=PackedStringArray("hpBar")]
 script = ExtResource("3_mc8wv")
+hpBar = NodePath("../HpNode/HpBar")
 
 [node name="ShipRender" type="Node2D" parent="." node_paths=PackedStringArray("ship_model")]
 script = ExtResource("2_nk2qb")
@@ -41,8 +51,10 @@ sprite_frames = SubResource("SpriteFrames_d4ovq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipRender/Area2D"]
 shape = SubResource("CircleShape2D_h71f6")
 
-[node name="ManualMode" parent="." node_paths=PackedStringArray("ship") instance=ExtResource("2_cijco")]
+[node name="ManualMode" parent="." node_paths=PackedStringArray("ship", "game_over_label", "sprite") instance=ExtResource("2_cijco")]
 ship = NodePath("../ShipModel")
+game_over_label = NodePath("../GameOverNode")
+sprite = NodePath("../ShipRender/Sprite")
 
 [node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer")]
 script = ExtResource("4_smceo")
@@ -76,3 +88,25 @@ position = Vector2(500, 0)
 [node name="LandAnnouncer" type="Label" parent="Node2D"]
 offset_right = 40.0
 offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_sm5qk")
+
+[node name="GameOverNode" type="Node2D" parent="."]
+visible = false
+z_index = 1000
+position = Vector2(500, 300)
+
+[node name="GameOverLabel" type="Label" parent="GameOverNode"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Game Over!"
+label_settings = SubResource("LabelSettings_i06tg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HpNode" type="Node2D" parent="."]
+position = Vector2(0, 500)
+
+[node name="HpBar" type="Label" parent="HpNode"]
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_vfqgk")

@@ -31,6 +31,10 @@ func _ready() -> void:
 
 func on_collision(area: Area2D):
 	var parent = area.get_parent() 
+	
+	if parent is Island:
+		var hp = ship.hull_hp
+		damage(hp)
 	if parent is Obstacle:
 		if (playerShip.world_position - ship.world_position).length() > 500:
 			return

@@ -3,6 +3,8 @@ extends Node
 class_name ShipControl
 
 @export var ship: Ship
+@export var game_over_label: Node2D
+@export var sprite: AnimatedSprite2D
 
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
@@ -16,7 +18,8 @@ func _ready():
 
 func on_game_over():
 	print("Game Over!")
-
+	game_over_label.visible = true
+	sprite.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

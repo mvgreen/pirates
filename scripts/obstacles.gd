@@ -86,9 +86,9 @@ func snap_ship_to_island(direction: Vector2):
 func announce_land(target: Vector2):
 	var str
 	if target == Vector2.UP:
-		str = "North!"
-	elif target == Vector2.DOWN:
 		str = "South!"
+	elif target == Vector2.DOWN:
+		str = "North!"
 	elif target == Vector2.LEFT:
 		str = "West!"
 	else:

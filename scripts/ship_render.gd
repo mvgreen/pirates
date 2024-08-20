@@ -34,7 +34,7 @@ func on_collision(area: Area2D):
 		var player_hp = ship_model.hull_hp
 		var damage = min(enemy_hp, player_hp)
 		enemy.damage(damage)
-		damage(damage)
+		ship_model.damage(damage)
 	if not (parent is Obstacle):
 		return
 	var effect_type = (parent as Obstacle).effect_type
@@ -42,13 +42,6 @@ func on_collision(area: Area2D):
 	
 	if effect_type == Obstacle.EFFECT_DAMAGE:
 		ship_model.damage(effect_value)
-
-
-func damage(value: int):
-	var hp = ship_model.hull_hp - value
-	ship_model.hull_hp = max(0, hp)
-	if hp <= 0:
-		print("Game over")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -3,6 +3,7 @@ extends Node
 class_name Ship
 
 signal game_over
+@export var hpBar: Label
 
 var helmsman_skill = 2
 var seamen_skill = 2
@@ -65,6 +66,7 @@ func get_repair_amount():
 	return carpenters_skill * 10
 
 func damage(value: int):
-	hull_hp = hull_hp - value
+	hull_hp = max(0, hull_hp - value)
+	hpBar.text = "HP: " + str(hull_hp)
 	if hull_hp <= 0:
 		emit_signal("game_over")
