@@ -13,6 +13,8 @@ var last_trail_dot: Vector2
 var dot_prefab: PackedScene
 
 func _ready():
+	$UI.ship = ship
+	$UI.on_ship_set()
 	dot_prefab = preload("res://TrailDot.tscn")
 	($ShipIcon as Node2D).position = ship.world_position / 5000 + offset
 	add_trail_dot($ShipIcon.position)
@@ -28,6 +30,7 @@ func set_active(value: bool):
 	active = value
 	if active:
 		visible = true
+		$UI.on_ship_set()
 	else:
 		visible = false
 

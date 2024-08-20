@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bw58gxkwed124"]
+[gd_scene load_steps=7 format=3 uid="uid://bw58gxkwed124"]
 
 [ext_resource type="Script" path="res://scripts/world_map_mode.gd" id="1_m4v84"]
 [ext_resource type="Texture2D" uid="uid://dfrfft4dpr83u" path="res://sprites/map.png" id="1_swlix"]
 [ext_resource type="Texture2D" uid="uid://pliio0ukttr2" path="res://sprites/table.png" id="1_xyq8k"]
 [ext_resource type="Texture2D" uid="uid://c8m575b807bbe" path="res://sprites/ship_silhouette.png" id="4_yk5ay"]
+[ext_resource type="Script" path="res://ui.gd" id="5_ebaqe"]
+[ext_resource type="Texture2D" uid="uid://xp47gsccc0gn" path="res://sprites/paper.png" id="5_jrabk"]
 
 [node name="WorldMap" type="Node2D"]
 z_index = 200
@@ -29,3 +31,72 @@ texture = ExtResource("4_yk5ay")
 
 [node name="TrailDots" type="Node2D" parent="."]
 z_index = 203
+
+[node name="UI" type="Node2D" parent="." node_paths=PackedStringArray("repair", "steering", "acceleration", "accuracy", "reload", "notification", "resources")]
+z_index = 203
+position = Vector2(500, 850)
+script = ExtResource("5_ebaqe")
+repair = NodePath("Node2D/Repair")
+steering = NodePath("Node2D2/Steering")
+acceleration = NodePath("Node2D3/Acceleration")
+accuracy = NodePath("Node2D4/Accuracy")
+reload = NodePath("Node2D5/Reload")
+notification = NodePath("Node2D6/Notification")
+resources = NodePath("Node2D7/Resources")
+
+[node name="Sprite2D" type="Sprite2D" parent="UI"]
+texture = ExtResource("5_jrabk")
+
+[node name="Node2D" type="Node2D" parent="UI"]
+position = Vector2(-350, -200)
+
+[node name="Repair" type="Button" parent="UI/Node2D"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Repair ship"
+
+[node name="Node2D2" type="Node2D" parent="UI"]
+position = Vector2(-350, -150)
+
+[node name="Steering" type="Button" parent="UI/Node2D2"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Upgrade steering"
+
+[node name="Node2D3" type="Node2D" parent="UI"]
+position = Vector2(-350, -100)
+
+[node name="Acceleration" type="Button" parent="UI/Node2D3"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Upgrade acceleration"
+
+[node name="Node2D4" type="Node2D" parent="UI"]
+position = Vector2(-350, -50)
+
+[node name="Accuracy" type="Button" parent="UI/Node2D4"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Upgrade Accuracy"
+
+[node name="Node2D5" type="Node2D" parent="UI"]
+position = Vector2(-350, 0)
+
+[node name="Reload" type="Button" parent="UI/Node2D5"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Upgrade Reloading"
+
+[node name="Node2D6" type="Node2D" parent="UI"]
+position = Vector2(300, 100)
+
+[node name="Notification" type="Button" parent="UI/Node2D6"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Node2D7" type="Node2D" parent="UI"]
+position = Vector2(300, 0)
+
+[node name="Resources" type="Button" parent="UI/Node2D7"]
+offset_right = 40.0
+offset_bottom = 23.0
