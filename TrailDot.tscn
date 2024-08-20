@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw3scctgfnspc"]
+
+[ext_resource type="Texture2D" uid="uid://ck44wa7us7rld" path="res://sprites/trail_dot.png" id="1_vbasd"]
+
+[node name="TrailDot" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 203
+texture = ExtResource("1_vbasd")

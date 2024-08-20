@@ -7,6 +7,9 @@ class_name ShipControl
 var drift_time_passed = 0.0
 var drift_vector = Vector2(randf() - 0.5, randf() - 0.5).normalized() * 0.1
 
+var world_mode_modifier = 60
+var is_world_mode = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship.game_over.connect(on_game_over)
@@ -33,6 +36,12 @@ func _physics_process(delta):
 	
 	var acceleration = update_acceleration(position, is_storm, is_still, max_speed * ship.speed_limit_partition, ship.speed)
 	var speed = max(0, min(ship.speed + acceleration * delta, max_speed))
+	
+	if is_world_mode:
+		max_speed *= world_mode_modifier
+		acceleration *= world_mode_modifier
+		speed *= world_mode_modifier
+		
 	var direction = update_direction(ship.direction, speed, delta)
 	
 	if is_equal_approx(ship.speed, 0.0):

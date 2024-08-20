@@ -1,5 +1,7 @@
 extends Node
 
+class_name ObstacleContainer
+
 @export var ship: Ship
 @export var shipRenderer: ShipRenderer
 
@@ -30,9 +32,6 @@ func _ready():
 	fill_obstacles_pool()
 	update_loaded_chunks()
 
-func _unhandled_key_input(event):
-	if event.is_action_released("force_unload"):
-		set_obstacles_disabled(!disabled)
 
 func set_obstacles_disabled(value: bool):
 	disabled = value
