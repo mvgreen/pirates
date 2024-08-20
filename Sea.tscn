@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=17 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dya6uyvkcdeji" path="res://patterns.tscn" id="5_tousa"]
 [ext_resource type="PackedScene" uid="uid://bw58gxkwed124" path="res://WorldMap.tscn" id="7_tldm6"]
 [ext_resource type="Texture2D" uid="uid://oop34xc31ny" path="res://sprites/sea_tile.png" id="9_r1j1e"]
+[ext_resource type="Script" path="res://ammo.gd" id="10_wgner"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
 animations = [{
@@ -129,3 +130,20 @@ label_settings = SubResource("LabelSettings_vfqgk")
 z_index = -100
 position = Vector2(500, 500)
 sprite_frames = SubResource("SpriteFrames_wgt6l")
+
+[node name="Ammo" type="Node2D" parent="." node_paths=PackedStringArray("ship")]
+position = Vector2(0, 700)
+script = ExtResource("10_wgner")
+ship = NodePath("../ShipModel")
+
+[node name="Front" type="Label" parent="Ammo"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Left" type="Label" parent="Ammo"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Right" type="Label" parent="Ammo"]
+offset_right = 40.0
+offset_bottom = 23.0

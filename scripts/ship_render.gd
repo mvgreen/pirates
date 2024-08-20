@@ -35,6 +35,11 @@ func on_collision(area: Area2D):
 		var damage = min(enemy_hp, player_hp)
 		enemy.damage(damage)
 		ship_model.damage(damage)
+		var away_from_enemy = (ship_model.world_position - parent.ship.world_position).normalized()
+		ship_model.world_position += away_from_enemy * 20
+		ship_model.set_accelerastion_stage(0)
+		ship_model.speed = 0
+		
 	if not (parent is Obstacle):
 		return
 	var effect_type = (parent as Obstacle).effect_type
