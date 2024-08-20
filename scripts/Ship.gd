@@ -7,6 +7,7 @@ signal game_over
 
 var gold = 0
 var rum = 5
+var is_island_nearby = false
 
 var helmsman_skill = 2
 var seamen_skill = 2

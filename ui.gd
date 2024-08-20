@@ -11,6 +11,7 @@ var ship: Ship
 @export var resources: Button
 
 func on_ship_set():
+	($RumNode as Node2D).visible = ship.is_island_nearby
 	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
 	repair.text = "Full repair: " + str(ship.carpenters_cost + 1) + " [" + str(ship.hull_hp) + "]"
 	steering.text = "Upgrade helmsman - improve steering: "+ str(ship.helmsman_skill + 1)

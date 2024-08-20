@@ -100,3 +100,11 @@ position = Vector2(300, 0)
 [node name="Resources" type="Button" parent="UI/Node2D7"]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="RumNode" type="Node2D" parent="UI"]
+
+[node name="Rum" type="Button" parent="UI/RumNode"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Buy rum: 500 gold
+"

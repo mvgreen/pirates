@@ -137,12 +137,17 @@ func update_loaded_chunks():
 		var to_nearest_island = get_vector_to_nearest_island(current_chunk)
 		var distance = to_nearest_island.length_squared()
 		if distance <= 100 * 100:
+			if distance <= 10 * 10:
+				ship.is_island_nearby = true
+			else:
+				ship.is_island_nearby = false
 			var target = get_snapping_direction_to_island(to_nearest_island)
 			if target == null:
 				land_announcer.text = ""
 				return
 			announce_land(target)
 		else:
+			ship.is_island_nearby = false
 			land_announcer.text = ""
 
 func update_children_relative_position():
