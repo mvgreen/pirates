@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=16 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="Texture2D" uid="uid://dfxyt1xbqolbx" path="res://sprites/ship.png" id="1_vco1m"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/obstacles.gd" id="4_smceo"]
 [ext_resource type="PackedScene" uid="uid://dya6uyvkcdeji" path="res://patterns.tscn" id="5_tousa"]
 [ext_resource type="PackedScene" uid="uid://bw58gxkwed124" path="res://WorldMap.tscn" id="7_tldm6"]
+[ext_resource type="Texture2D" uid="uid://oop34xc31ny" path="res://sprites/sea_tile.png" id="9_r1j1e"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_d4ovq"]
 animations = [{
@@ -31,6 +32,17 @@ font_size = 30
 
 [sub_resource type="LabelSettings" id="LabelSettings_vfqgk"]
 font_size = 24
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wgt6l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_r1j1e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Sea" type="Node2D"]
 
@@ -110,3 +122,8 @@ position = Vector2(0, 500)
 offset_right = 40.0
 offset_bottom = 23.0
 label_settings = SubResource("LabelSettings_vfqgk")
+
+[node name="SeaSprite" type="AnimatedSprite2D" parent="."]
+z_index = -100
+position = Vector2(500, 500)
+sprite_frames = SubResource("SpriteFrames_wgt6l")

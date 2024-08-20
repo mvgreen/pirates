@@ -17,6 +17,9 @@ func on_state_changed():
 	($AnimatedSprite2D as AnimatedSprite2D).visible = active
 	($Area2D/CollisionShape2D as CollisionShape2D).set_deferred("disabled", not active)
 	if effect_type == EFFECT_DAMAGE:
-		($AnimatedSprite2D as AnimatedSprite2D).animation = "wrecks"
+		($AnimatedSprite2D as AnimatedSprite2D).animation = "default"
 	else: 
-		($AnimatedSprite2D as AnimatedSprite2D).animation = "ship"
+		($AnimatedSprite2D as AnimatedSprite2D).animation = "default"
+	if active:
+		($AnimatedSprite2D as AnimatedSprite2D).frame = randi() % 4
+		($AnimatedSprite2D as AnimatedSprite2D).play()

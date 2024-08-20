@@ -1,0 +1,26 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://bupn2fa0ayas3"]
+
+[ext_resource type="Texture2D" uid="uid://di0vixhdd3ivw" path="res://sprites/sharks_1.png" id="1_row6o"]
+[ext_resource type="Texture2D" uid="uid://2fpo5xwwf6in" path="res://sprites/sharks_2.png" id="2_6ejsk"]
+[ext_resource type="Texture2D" uid="uid://bo0xmkkr0ofbc" path="res://sprites/sharks_3.png" id="3_ww7ef"]
+[ext_resource type="Texture2D" uid="uid://bmj5qeuj0rbw7" path="res://sprites/sharks_4.png" id="4_yy3xi"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_row6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_6ejsk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ww7ef")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_yy3xi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
