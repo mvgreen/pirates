@@ -4,6 +4,7 @@ class_name ObstacleContainer
 
 @export var ship: Ship
 @export var shipRenderer: ShipRenderer
+@export var land_announcer: Label
 
 var current_chunk: Vector2
 
@@ -56,12 +57,11 @@ func get_vector_to_nearest_island(ship_chunk: Vector2) -> Vector2:
 		if v.distance_squared_to(ship_chunk) < min.distance_squared_to(ship_chunk):
 			min = v
 	return min - ship_chunk
-	
 
-func snap_ship_to_island(direction: Vector2):
+func get_snapping_direction_to_island(direction: Vector2):
 	var target_vector: Vector2
 	if direction == Vector2(0,0):
-		return
+		return null
 	var angle = direction.angle()
 	if abs(angle) <= PI / 4:
 		target_vector = Vector2.LEFT
@@ -71,10 +71,30 @@ func snap_ship_to_island(direction: Vector2):
 		target_vector = Vector2.UP
 	else:
 		target_vector = Vector2.DOWN
-	
+	return target_vector
+
+func snap_ship_to_island(direction: Vector2):
+	var target_vector = get_snapping_direction_to_island(direction)
+	if target_vector == null:
+		return
+	announce_land(target_vector)
 	target_vector *= 11 # move to chunk next to the edge of the island
 	
 	ship.world_position += (direction + target_vector) * 1000 # convert position to world coordinates
+
+
+func announce_land(target: Vector2):
+	var str
+	if target == Vector2.UP:
+		str = "North!"
+	elif target == Vector2.DOWN:
+		str = "South!"
+	elif target == Vector2.LEFT:
+		str = "West!"
+	else:
+		str = "East!"
+	
+	land_announcer.text = "Land to the " + str
 
 func fill_obstacles_pool():
 	for i in range(300):
@@ -114,6 +134,16 @@ func update_loaded_chunks():
 	if new_chunk_x != current_chunk.x or new_chunk_y != current_chunk.y:
 		current_chunk = Vector2(new_chunk_x, new_chunk_y)
 		update_chunks()
+		var to_nearest_island = get_vector_to_nearest_island(current_chunk)
+		var distance = to_nearest_island.length_squared()
+		if distance <= 100 * 100:
+			var target = get_snapping_direction_to_island(to_nearest_island)
+			if target == null:
+				land_announcer.text = ""
+				return
+			announce_land(target)
+		else:
+			land_announcer.text = ""
 
 func update_children_relative_position():
 	var children = $ObstaclesRenderList.get_children()

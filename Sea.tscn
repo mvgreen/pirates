@@ -44,10 +44,11 @@ shape = SubResource("CircleShape2D_h71f6")
 [node name="ManualMode" parent="." node_paths=PackedStringArray("ship") instance=ExtResource("2_cijco")]
 ship = NodePath("../ShipModel")
 
-[node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer")]
+[node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer")]
 script = ExtResource("4_smceo")
 ship = NodePath("../ShipModel")
 shipRenderer = NodePath("../ShipRender")
+land_announcer = NodePath("../Node2D/LandAnnouncer")
 
 [node name="ObstaclesRenderList" type="Node2D" parent="ObstacleContainer"]
 
@@ -58,6 +59,7 @@ shipRenderer = NodePath("../ShipRender")
 [node name="IslandsRenderList" type="Node2D" parent="ObstacleContainer"]
 
 [node name="WorldMap" parent="." node_paths=PackedStringArray("ship", "obstacles", "shipControl") instance=ExtResource("7_tldm6")]
+visible = false
 ship = NodePath("../ShipModel")
 obstacles = NodePath("../ObstacleContainer")
 shipControl = NodePath("../ManualMode")
@@ -67,3 +69,10 @@ offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("1_74rmc")
 ship = NodePath("../ShipModel")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(500, 0)
+
+[node name="LandAnnouncer" type="Label" parent="Node2D"]
+offset_right = 40.0
+offset_bottom = 23.0
