@@ -12,7 +12,8 @@ var ship: Ship
 
 func on_ship_set():
 	($RumNode as Node2D).visible = ship.is_island_nearby
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	notification.text = ""
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
 	repair.text = "Full repair: " + str(ship.carpenters_cost + 1) + " [" + str(ship.hull_hp) + "]"
 	steering.text = "Upgrade helmsman - improve steering: "+ str(ship.helmsman_skill + 1)
 	acceleration.text = "Upgrade seamen - improve acceleration: " + str(ship.seamen_skill + 1)
@@ -26,6 +27,18 @@ func _ready():
 	acceleration.pressed.connect(on_acceleration)
 	accuracy.pressed.connect(on_accuracy)
 	reload.pressed.connect(on_reload)
+	$RumNode/Rum.pressed.connect(on_buy)
+
+func on_buy():
+	if ship.gold < 500:
+		notification.text = "Not enough gold!"
+		return
+	else:
+		ship.gold -= 500
+		ship.rum += 1
+	notification.text = ""
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
+	
 
 func on_acceleration():
 	var cost = ship.seamen_skill + 1
@@ -43,7 +56,7 @@ func on_acceleration():
 	else:
 		acceleration.text = "Upgrade seamen - improve acceleration: " + str(ship.seamen_skill + 1)
 	notification.text = ""
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
 
 
 func on_accuracy():
@@ -62,7 +75,7 @@ func on_accuracy():
 	else:
 		accuracy.text = "Upgrade gunners - improve accuracy: " + str(ship.gunners_skill + 1)
 	notification.text = ""
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
 
 
 func on_reload():
@@ -81,7 +94,7 @@ func on_reload():
 	else:
 		reload.text = "Upgrade powder monkeys - improve reload time: " + str(ship.powder_monkeys_skill + 1)
 	notification.text = ""
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
 
 func on_steering():
 	var cost = ship.helmsman_skill + 1
@@ -99,7 +112,7 @@ func on_steering():
 	else:
 		steering.text = "Upgrade helmsman - improve steering: "+ str(ship.helmsman_skill + 1)
 	notification.text = ""
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
 	
 
 func on_repair():
@@ -116,8 +129,13 @@ func on_repair():
 	ship.hull_hp = 100
 	repair.text = "Full repair: " + str(ship.carpenters_cost + 1) + " (" + str(ship.hull_hp) + ")"
 	notification.text = ""
-	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum) 
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " + str(ship.rum)  + "\nGold: " + str(ship.gold)
+	ship.update_hp()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	resources.text = "HP: " + str(ship.hull_hp) + "\nRum: " +\
+	 str(ship.rum)  + "\nGold: " + str(ship.gold) +\
+	"\nProvision: " + str(snapped(ship.provision, 1)) +\
+	"\nCaptain's battery: " + str(snapped(ship.battery, 1)) 
+	$RumNode.visible = ship.is_island_nearby

@@ -3,6 +3,8 @@ extends Node2D
 class_name ShipRenderer
 
 @export var ship_model: Ship
+@export var game_over_node: Node2D
+@export var game_over_label: Label 
 
 var ship_render_position: Vector2
 
@@ -10,7 +12,7 @@ var reset_collider = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	ship_model.world_position = Vector2(750000,1600000)#Vector2(4169000, 1370000)
+	ship_model.world_position = Vector2(4198000, 1370000)
 	ship_model.direction = Vector2.UP
 	ship_render_position = Vector2(500, 500) #ship_model.world_position
 	position = ship_render_position
@@ -57,6 +59,13 @@ func on_collision(area: Area2D):
 			ship_model.world_position -= ship_model.direction * 20
 		ship_model.set_accelerastion_stage(0)
 		ship_model.speed = 0
+		ship_model.provision = 100
+		
+		if ship_model.is_finish_nearby and not game_over_node.visible:
+			game_over_label.text = "You reached the island!\nScore: " +\
+			 str(snapped(ship_model.gold + (ship_model.battery * 2), 1))
+			game_over_node.visible = true
+			
 	if parent is PirateShipAi:
 		var enemy = (parent as PirateShipAi)
 		var enemy_hp = enemy.ship.hull_hp

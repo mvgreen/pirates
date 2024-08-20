@@ -5,6 +5,8 @@ class_name ObstacleContainer
 @export var ship: Ship
 @export var shipRenderer: ShipRenderer
 @export var land_announcer: Label
+@export var sea_theme: AudioStreamPlayer2D
+@export var port_theme: AudioStreamPlayer2D
 
 var current_chunk: Vector2
 
@@ -32,7 +34,7 @@ func _ready():
 	current_chunk = Vector2(-1000, -1000)
 	fill_obstacles_pool()
 	update_loaded_chunks()
-
+	
 
 func set_obstacles_disabled(value: bool):
 	disabled = value
@@ -78,7 +80,7 @@ func snap_ship_to_island(direction: Vector2):
 	if target_vector == null:
 		return
 	announce_land(target_vector)
-	target_vector *= 11 # move to chunk next to the edge of the island
+	target_vector *= 12 # move to chunk next to the edge of the island
 	
 	ship.world_position += (direction + target_vector) * 1000 # convert position to world coordinates
 
@@ -90,9 +92,9 @@ func announce_land(target: Vector2):
 	elif target == Vector2.DOWN:
 		str = "North!"
 	elif target == Vector2.LEFT:
-		str = "West!"
-	else:
 		str = "East!"
+	else:
+		str = "West!"
 	
 	land_announcer.text = "Land to the " + str
 
@@ -122,10 +124,21 @@ func fill_obstacles_pool():
 func _process(delta):
 	if disabled:
 		forced_unload()
+		update_music()
 		return
 	update_children_relative_position()
 	update_loaded_chunks()
 
+func update_music():
+	var new_chunk_x = floor(abs(ship.world_position.x) / 1000) * sign(ship.world_position.x)
+	var new_chunk_y = floor(abs(ship.world_position.y) / 1000) * sign(ship.world_position.y)
+	var current_chunk = Vector2(new_chunk_x, new_chunk_y)
+	var to_nearest_island = get_vector_to_nearest_island(current_chunk)
+	var distance = to_nearest_island.length_squared()
+	if distance > 11 * 11:
+		if not sea_theme.playing:
+			sea_theme.play()
+			port_theme.stop()
 
 func update_loaded_chunks():
 	var new_chunk_x = floor(abs(ship.world_position.x) / 1000) * sign(ship.world_position.x)
@@ -134,8 +147,24 @@ func update_loaded_chunks():
 	if new_chunk_x != current_chunk.x or new_chunk_y != current_chunk.y:
 		current_chunk = Vector2(new_chunk_x, new_chunk_y)
 		update_chunks()
+		var v = ($Patterns as Patterns).island_locations.front()
+		var to_finish = (current_chunk - v).length_squared()
+		if to_finish <= 10 * 10:
+			ship.is_finish_nearby = true
+		else:
+			ship.is_finish_nearby = false
+		
 		var to_nearest_island = get_vector_to_nearest_island(current_chunk)
 		var distance = to_nearest_island.length_squared()
+		if distance <= 11 * 11:
+			if not port_theme.playing:
+				sea_theme.stop()
+				port_theme.play()
+		else:
+			if not sea_theme.playing:
+				sea_theme.play()
+				port_theme.stop()
+
 		if distance <= 100 * 100:
 			if distance <= 10 * 10:
 				ship.is_island_nearby = true

@@ -56,6 +56,8 @@ func on_collision(area: Area2D):
 		var this_hp = ship.hull_hp
 		var damage = min(other_hp, this_hp)
 		damage(damage)
+		ship.set_accelerastion_stage(0)
+		ship.speed = 0
 
 func damage(value: int):
 	var hp = ship.hull_hp - value

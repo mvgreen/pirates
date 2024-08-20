@@ -7,7 +7,10 @@ signal game_over
 
 var gold = 0
 var rum = 5
+var provision = 100
+var battery = 100
 var is_island_nearby = false
+var is_finish_nearby = false
 
 var helmsman_skill = 2
 var seamen_skill = 2
@@ -77,3 +80,6 @@ func damage(value: int):
 	hpBar.text = "HP: " + str(hull_hp)
 	if hull_hp <= 0:
 		emit_signal("game_over")
+
+func update_hp():
+	hpBar.text = "HP: " + str(hull_hp)

@@ -28,7 +28,6 @@ func _ready():
 	destroyAnimation.visible = false
 
 func on_game_over():
-	print("Game Over!")
 	if game_over_label.visible:
 		return
 	ship.set_accelerastion_stage(0)
@@ -50,6 +49,16 @@ func update_reload_time(delta):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	update_reload_time(delta)
+	var provision_delta = delta / 24
+	if is_world_mode:
+		provision_delta *= 60
+	
+	ship.provision = max(0, ship.provision - provision_delta)
+	ship.battery = max(0, ship.battery - delta / 6)
+	
+	if ship.provision == 0 or ship.battery == 0 && not game_over_label.visible:
+		on_game_over()
+	
 	if game_over_label.visible:
 		shipRenderer.rotation = 0
 

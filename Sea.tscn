@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://coccek7xjofc5"]
+[gd_scene load_steps=20 format=3 uid="uid://coccek7xjofc5"]
 
 [ext_resource type="Script" path="res://Label.gd" id="1_74rmc"]
 [ext_resource type="PackedScene" uid="uid://bguv7nl60urxb" path="res://manual_mode.tscn" id="2_cijco"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://oop34xc31ny" path="res://sprites/sea_tile.png" id="9_r1j1e"]
 [ext_resource type="Script" path="res://ammo.gd" id="10_wgner"]
 [ext_resource type="Script" path="res://resources.gd" id="12_i7y0k"]
+[ext_resource type="AudioStream" path="port.wav" id="13_6q18e"]
+[ext_resource type="AudioStream" path="sea_theme.wav" id="13_fx80b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h71f6"]
 radius = 40.0
@@ -42,10 +44,12 @@ animations = [{
 script = ExtResource("3_mc8wv")
 hpBar = NodePath("../HpNode/HpBar")
 
-[node name="ShipRender" type="Node2D" parent="." node_paths=PackedStringArray("ship_model")]
+[node name="ShipRender" type="Node2D" parent="." node_paths=PackedStringArray("ship_model", "game_over_node", "game_over_label")]
 z_index = 100
 script = ExtResource("2_nk2qb")
 ship_model = NodePath("../ShipModel")
+game_over_node = NodePath("../GameOverNode")
+game_over_label = NodePath("../GameOverNode/GameOverLabel")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="ShipRender"]
 sprite_frames = ExtResource("3_ts050")
@@ -98,11 +102,13 @@ ammo = NodePath("../Ammo")
 shipRenderer = NodePath("../ShipRender")
 destroyAnimation = NodePath("../ShipRender/DestroyAnimation")
 
-[node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer")]
+[node name="ObstacleContainer" type="Node2D" parent="." node_paths=PackedStringArray("ship", "shipRenderer", "land_announcer", "sea_theme", "port_theme")]
 script = ExtResource("4_smceo")
 ship = NodePath("../ShipModel")
 shipRenderer = NodePath("../ShipRender")
 land_announcer = NodePath("../Node2D/LandAnnouncer")
+sea_theme = NodePath("../sea_theme")
+port_theme = NodePath("../port_theme")
 
 [node name="ObstaclesRenderList" type="Node2D" parent="ObstacleContainer"]
 
@@ -177,7 +183,7 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="Resources" type="Node2D" parent="." node_paths=PackedStringArray("ship")]
-position = Vector2(900, 0)
+position = Vector2(800, 0)
 script = ExtResource("12_i7y0k")
 ship = NodePath("../ShipModel")
 
@@ -188,3 +194,19 @@ offset_bottom = 23.0
 [node name="Rum" type="Label" parent="Resources"]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="Provision" type="Label" parent="Resources"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Charge" type="Label" parent="Resources"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="sea_theme" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_fx80b")
+bus = &"sea"
+
+[node name="port_theme" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_6q18e")
+bus = &"port"
